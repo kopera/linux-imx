@@ -2560,15 +2560,12 @@ brcmf_sdio_ulp_preinit(struct device *dev)
 	struct brcmf_bus *bus_if = dev_get_drvdata(dev);
 	struct brcmf_sdio_dev *sdiodev = bus_if->bus_priv.sdio;
 	struct brcmf_if *ifp = bus_if->drvr->iflist[0];
-	s32 err = 0;
 
 	brcmf_dbg(TRACE, "Enter\n");
 
 	/* Query ulp_sdioctrl iovar to get the ULP related SHM offsets */
-	err = brcmf_fil_iovar_data_get(ifp, "ulp_sdioctrl", &sdiodev->shm_ulp,
-				       sizeof(sdiodev->shm_ulp));
-	if (err)
-		brcmf_err("ulp_sdioctrl iovar returned err = %d\n", err);
+	brcmf_fil_iovar_data_get(ifp, "ulp_sdioctrl", &sdiodev->shm_ulp,
+				      sizeof(sdiodev->shm_ulp));
 
 	sdiodev->ulp = false;
 
@@ -3727,7 +3724,7 @@ void brcmf_sdio_isr(struct brcmf_sdio *bus)
 		atomic_set(&bus->ipend, 1);
 	else
 		if (brcmf_sdio_intr_rstatus(bus)) {
-			brcmf_err("failed backplane access\n");
+			brcmf_dbg(SDIO, "failed backplane access\n");
 		}
 
 	/* Disable additional interrupts (is this needed now)? */
