@@ -31,14 +31,22 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		// reg_sound: sound_vdd {
-		// 	compatible = "regulator-fixed";
-		// 	regulator-name = "tas5825m_supply";
-		// 	regulator-min-microvolt = <3300000>;
-		// 	regulator-max-microvolt = <3300000>;
-		// 	gpio = <&gpio3 3 GPIO_ACTIVE_HIGH>;
-		// 	enable-active-high;
-		// };
+		reg_tas5825m_dvdd: tas5825m_dvdd {
+			compatible = "regulator-fixed";
+			regulator-name = "tas5825m_dvdd";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio3 3 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+		};
+
+		reg_tas5825m_pvdd: tas5825m_pvdd {
+			compatible = "regulator-fixed";
+			regulator-name = "tas5825m_pvdd";
+			regulator-min-microvolt = <12000000>;
+			regulator-max-microvolt = <12000000>;
+			regulator-always-on;
+		};
 
 		reg_wifi_en: wifi_en {
 			compatible = "regulator-fixed";
@@ -66,8 +74,7 @@
 		simple-audio-card,widgets =
 				"Speaker", "Speaker";
 		simple-audio-card,routing =
-				"Speaker", "SPOP",
-				"Speaker", "SPOM";
+				"Speaker", "OUT";
 		status = "okay";
 
 		sai1_master: simple-audio-card,cpu {
@@ -562,6 +569,9 @@
 	tas5825m: tas5825m@0 {
 		compatible = "ti,tas5825m";
 		reg = <0x00>;
+		#sound-dai-cells = <0>;
+		dvdd-supply = <&reg_tas5825m_dvdd>;
+		pvdd-supply = <&reg_tas5825m_pvdd>;
 		status = "okay";
 	};
 };
@@ -655,6 +665,7 @@
 &sai1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_sai1>;
+	#sound-dai-cells = <0>;
 	assigned-clocks = <&clk IMX8MQ_CLK_SAI1>;
 	assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
 	assigned-clock-rates = <24576000>;
@@ -664,6 +675,7 @@
 &sai2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_sai2>;
+	#sound-dai-cells = <0>;
 	assigned-clocks = <&clk IMX8MQ_CLK_SAI2>;
 	assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
 	assigned-clock-rates = <24576000>;
