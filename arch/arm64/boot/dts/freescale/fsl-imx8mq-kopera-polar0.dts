@@ -566,9 +566,9 @@
 	pinctrl-0 = <&pinctrl_i2c4>;
 	status = "okay";
 
-	tas5825m: tas5825m@0 {
+	tas5825m: tas5825m@0x4c {
 		compatible = "ti,tas5825m";
-		reg = <0x00>;
+		reg = <0x4c>;
 		#sound-dai-cells = <0>;
 		dvdd-supply = <&reg_tas5825m_dvdd>;
 		pvdd-supply = <&reg_tas5825m_pvdd>;
