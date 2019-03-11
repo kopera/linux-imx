@@ -31,22 +31,22 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		reg_tas5825m_dvdd: tas5825m_dvdd {
-			compatible = "regulator-fixed";
-			regulator-name = "tas5825m_dvdd";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpio = <&gpio3 3 GPIO_ACTIVE_HIGH>;
-			enable-active-high;
-		};
+		// reg_tas5825m_dvdd: tas5825m_dvdd {
+		// 	compatible = "regulator-fixed";
+		// 	regulator-name = "tas5825m_dvdd";
+		// 	regulator-min-microvolt = <3300000>;
+		// 	regulator-max-microvolt = <3300000>;
+		// 	gpio = <&gpio3 3 GPIO_ACTIVE_HIGH>;
+		// 	enable-active-high;
+		// };
 
-		reg_tas5825m_pvdd: tas5825m_pvdd {
-			compatible = "regulator-fixed";
-			regulator-name = "tas5825m_pvdd";
-			regulator-min-microvolt = <12000000>;
-			regulator-max-microvolt = <12000000>;
-			regulator-always-on;
-		};
+		// reg_tas5825m_pvdd: tas5825m_pvdd {
+		// 	compatible = "regulator-fixed";
+		// 	regulator-name = "tas5825m_pvdd";
+		// 	regulator-min-microvolt = <12000000>;
+		// 	regulator-max-microvolt = <12000000>;
+		// 	regulator-always-on;
+		// };
 
 		reg_wifi_en: wifi_en {
 			compatible = "regulator-fixed";
@@ -570,8 +570,8 @@
 		compatible = "ti,tas5825m";
 		reg = <0x4c>;
 		#sound-dai-cells = <0>;
-		dvdd-supply = <&reg_tas5825m_dvdd>;
-		pvdd-supply = <&reg_tas5825m_pvdd>;
+		// dvdd-supply = <&reg_tas5825m_dvdd>;
+		// pvdd-supply = <&reg_tas5825m_pvdd>;
 		status = "okay";
 	};
 };

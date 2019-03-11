@@ -917,7 +917,7 @@ config SND_SOC_TAS5720
 	  Class-D audio power amplifiers.
 
 config SND_SOC_TAS5825M
-	tristate "Texas Instruments TAS5825M Mono Audio amplifier"
+	tristate "Texas Instruments TAS5825M Stereo Audio amplifier"
 	depends on I2C
 	help
 	  Enable support for Texas Instruments TAS5825M high-performance Stereo
