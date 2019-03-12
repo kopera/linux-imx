@@ -114,6 +114,13 @@
 			linux,default-trigger = "mmc0";
 		};
 	};
+
+	si4688_reset: si4688-reset {
+		compatible = "gpio-reset";
+		reset-gpios = <&gpio5 2 GPIO_ACTIVE_LOW>;
+		reset-delay-us = <500>;
+		#reset-cells = <0>;
+	};
 };
 
 &iomuxc {
@@ -370,6 +377,13 @@
 				MX8MQ_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x11
 				MX8MQ_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x11
 				MX8MQ_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x11
+			>;
+		};
+
+		pinctrl_si4688: si468xgrp {
+			fsl,pins = <
+				MX8MQ_IOMUXC_SAI3_MCLK_GPIO5_IO2		0x86
+				MX8MQ_IOMUXC_SAI3_RXD_GPIO4_IO30		0xc6
 			>;
 		};
 
@@ -797,7 +811,10 @@
 	si4688@0 {
 		compatible = "silabs,si468x-spi";
 		reg = <0>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_si4688>;
 		spi-max-frequency = <100000>;
+		resets = <&si4688_reset>;
 		status = "okay";
 	};
 };
