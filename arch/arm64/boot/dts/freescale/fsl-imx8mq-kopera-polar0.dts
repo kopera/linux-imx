@@ -791,10 +791,15 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi1>;
 	cs-gpios = <&gpio5 9 0>;
-	fsl,spi-num-chipselects = <1>;
+	num-cs = <1>;
 	status = "okay";
 
-	/* DAB Radio */
+	si4688@0 {
+		compatible = "silabs,si468x-spi";
+		reg = <0>;
+		spi-max-frequency = <100000>;
+		status = "okay";
+	};
 };
 
 &pwm1 {
