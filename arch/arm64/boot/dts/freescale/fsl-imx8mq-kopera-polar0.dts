@@ -813,7 +813,7 @@
 		reg = <0>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_si4688>;
-		spi-max-frequency = <100000>;
+		spi-max-frequency = <10000000>;
 		resets = <&si4688_reset>;
 		status = "okay";
 	};
