@@ -68,21 +68,25 @@
 	sound {
 		compatible = "simple-audio-card";
 		simple-audio-card,name = "tas5825m";
-		simple-audio-card,format = "i2s";
-		simple-audio-card,bitclock-master = <&sai1_master>;
-		simple-audio-card,frame-master = <&sai1_master>;
-		simple-audio-card,widgets =
-				"Speaker", "Speaker";
-		simple-audio-card,routing =
-				"Speaker", "OUT";
+		// simple-audio-card,widgets =
+		// 		"Speaker", "Speaker";
+		// simple-audio-card,routing =
+		// 		"Speaker", "OUT";
 		status = "okay";
 
-		sai1_master: simple-audio-card,cpu {
+		simple-audio-card,dai-link@0 {
+			format = "i2s";
+			// bitclock-master = <&sai1_master>;
+			// frame-master = <&sai1_master>;
+
+			cpu {
 			sound-dai = <&sai1>;
 		};
-		simple-audio-card,codec {
+
+			codec {
 			sound-dai = <&tas5825m>;
 		};
+	};
 	};
 
 	backlight {
@@ -583,7 +587,8 @@
 	tas5825m: tas5825m@0x4c {
 		compatible = "ti,tas5825m";
 		reg = <0x4c>;
-		#sound-dai-cells = <0>;
+		clocks = <&clk IMX8MQ_CLK_SAI1_ROOT>;
+		clock-names = "mclk";
 		// dvdd-supply = <&reg_tas5825m_dvdd>;
 		// pvdd-supply = <&reg_tas5825m_pvdd>;
 		status = "okay";
@@ -679,20 +684,18 @@
 &sai1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_sai1>;
-	#sound-dai-cells = <0>;
 	assigned-clocks = <&clk IMX8MQ_CLK_SAI1>;
 	assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
-	assigned-clock-rates = <24576000>;
+	assigned-clock-rates = <1536000>;
 	status = "okay";
 };
 
 &sai2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_sai2>;
-	#sound-dai-cells = <0>;
 	assigned-clocks = <&clk IMX8MQ_CLK_SAI2>;
 	assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
-	assigned-clock-rates = <24576000>;
+	assigned-clock-rates = <1536000>;
 	status = "okay";
 };
 
