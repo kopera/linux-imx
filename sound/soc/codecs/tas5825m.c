@@ -29,10 +29,6 @@
 #include "tas5825m.h"
 
 
-#define TAS5825M_RATES	     (SNDRV_PCM_RATE_48000)
-#define TAS5825M_FORMATS     (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |\
-                              SNDRV_PCM_FMTBIT_S24_LE | SNDRV_PCM_FMTBIT_S32_LE)
-
 #define TAS5825M_REG_00      (0x00)
 #define TAS5825M_REG_03      (0x03)
 #define TAS5825M_REG_0C      (0x0c)
@@ -161,7 +157,7 @@ static int tas5825m_vol_locked_put(struct snd_kcontrol *kcontrol, struct snd_ctl
 static const struct snd_kcontrol_new tas5825m_snd_controls[] = {
 	{
 		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
-		.name = "Playback Volume",
+		.name = "Master Volume",
 		.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
 		.info = tas5825m_vol_info,
 		.get = tas5825m_vol_locked_get,
@@ -169,56 +165,53 @@ static const struct snd_kcontrol_new tas5825m_snd_controls[] = {
 	}
 };
 
-static const struct snd_soc_dapm_widget tas5825m_dapm_widgets[] = {
-	SND_SOC_DAPM_INPUT("IN"),
-	SND_SOC_DAPM_OUTPUT("OUT")
-};
+// static const struct snd_soc_dapm_widget tas5825m_dapm_widgets[] = {
+// 	SND_SOC_DAPM_DAC("DACL", NULL, SND_SOC_NOPM, 0, 0),
+// 	SND_SOC_DAPM_DAC("DACR", NULL, SND_SOC_NOPM, 0, 0),
 
-static const struct snd_soc_dapm_route tas5825m_audio_map[] = {
-	{ "OUT", NULL, "IN" },
-};
+// 	SND_SOC_DAPM_OUTPUT("OUT_AP"),
+// 	SND_SOC_DAPM_OUTPUT("OUT_AN"),
+// 	SND_SOC_DAPM_OUTPUT("OUT_BP"),
+// 	SND_SOC_DAPM_OUTPUT("OUT_BN"),
+// };
 
-static int tas5825m_codec_probe(struct snd_soc_codec *codec)
-{
-	// struct tas5825m_priv *tas5825m = snd_soc_codec_get_drvdata(codec);
-	// int ret;
+// static const struct snd_soc_dapm_route tas5825m_dapm_routes[] = {
+// 	{ "DACL",  NULL, "Playback" },
+// 	{ "DACR",  NULL, "Playback" },
 
-	// ret = regulator_bulk_enable(ARRAY_SIZE(tas5825m->supplies), tas5825m->supplies);
-	// if (ret != 0) {
-	// 	dev_err(codec->dev, "failed to enable supplies: %d\n", ret);
-	// 	return ret;
-	// }
-
-	return 0;
-}
-
-static int tas5825m_codec_remove(struct snd_soc_codec *codec)
-{
-	// struct tas5825m_priv *tas5825m = snd_soc_codec_get_drvdata(codec);
-	// int ret;
-
-	// ret = regulator_bulk_disable(ARRAY_SIZE(tas5825m->supplies), tas5825m->supplies);
-	// if (ret < 0) {
-	// 	dev_err(codec->dev, "failed to disable supplies: %d\n", ret);
-	// }
-
-	// return ret;
-	return 0;
-};
+// 	{ "OUT_AP", NULL, "DACL" },
+// 	{ "OUT_AN", NULL, "DACL" },
+// 	{ "OUT_BP", NULL, "DACR" },
+// 	{ "OUT_BN", NULL, "DACR" },
+// };
 
 static struct snd_soc_codec_driver soc_codec_tas5825m = {
-	.probe = tas5825m_codec_probe,
-	.remove = tas5825m_codec_remove,
-
 	.component_driver = {
 		.controls = tas5825m_snd_controls,
 		.num_controls = ARRAY_SIZE(tas5825m_snd_controls),
-		.dapm_widgets = tas5825m_dapm_widgets,
-		.num_dapm_widgets = ARRAY_SIZE(tas5825m_dapm_widgets),
-		.dapm_routes = tas5825m_audio_map,
-		.num_dapm_routes = ARRAY_SIZE(tas5825m_audio_map),
+		// .dapm_widgets = tas5825m_dapm_widgets,
+		// .num_dapm_widgets = ARRAY_SIZE(tas5825m_dapm_widgets),
+		// .dapm_routes = tas5825m_dapm_routes,
+		// .num_dapm_routes = ARRAY_SIZE(tas5825m_dapm_routes),
 	},
 };
+
+static int tas5825m_hw_params(struct snd_pcm_substream *substream, struct snd_pcm_hw_params *params, struct snd_soc_dai *dai)
+{
+	int rate;
+
+	rate = params_rate(params);
+	if (rate != 48000) {
+		dev_err(dai->codec->dev, "Rate: %d is not supported\n", rate);
+		return -EINVAL;
+	}
+	return 0;
+}
+
+static int tas5825m_set_dai_fmt(struct snd_soc_dai *codec_dai, unsigned int fmt)
+{
+	return 0;
+}
 
 static int tas5825m_mute(struct snd_soc_dai *dai, int mute)
 {
@@ -246,9 +239,8 @@ static int tas5825m_mute(struct snd_soc_dai *dai, int mute)
 }
 
 static const struct snd_soc_dai_ops tas5825m_dai_ops = {
-	// .hw_params	= tas5825m_hw_params,
-	// .set_fmt	= tas5825m_set_dai_fmt,
-	// .set_tdm_slot	= tas5825m_set_dai_tdm_slot,
+	.hw_params	= tas5825m_hw_params,
+	.set_fmt	= tas5825m_set_dai_fmt,
 	.digital_mute = tas5825m_mute,
 };
 
@@ -258,8 +250,9 @@ static struct snd_soc_dai_driver tas5825m_dai = {
 		.stream_name = "Playback",
 		.channels_min = 2,
 		.channels_max = 2,
-		.rates = TAS5825M_RATES,
-		.formats = TAS5825M_FORMATS,
+		.rates = SNDRV_PCM_RATE_48000,
+		.formats = (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |\
+		            SNDRV_PCM_FMTBIT_S24_LE | SNDRV_PCM_FMTBIT_S32_LE),
 	},
 	.ops = &tas5825m_dai_ops,
 };
@@ -282,6 +275,21 @@ static int tas5825m_probe(struct i2c_client *client, const struct i2c_device_id 
 		return -ENOMEM;
 
 	mutex_init(&tas5825m->lock);
+
+	// for (i = 0; i < TAS5825M_NUM_SUPPLIES; i++)
+	// 	tas5825m->supplies[i].supply = tas5825m_supply_names[i];
+
+	// ret = devm_regulator_bulk_get(dev, TAS5825M_NUM_SUPPLIES, tas5825m->supplies);
+	// if (ret != 0) {
+	// 	dev_err(dev, "failed to request supplies: %d\n", ret);
+	// 	return ret;
+	// }
+	// ret = regulator_bulk_enable(TAS5825M_NUM_SUPPLIES, tas5825m->supplies);
+	// if (ret) {
+	// 	dev_err(dev, "failed to enable supplies: %d\n", ret);
+	// 	return ret;
+	// }
+
 	tas5825m->regmap = devm_regmap_init_i2c(client, &tas5825m_regmap_config);
 	if (IS_ERR(tas5825m->regmap)) {
 		ret = PTR_ERR(tas5825m->regmap);
@@ -296,15 +304,6 @@ static int tas5825m_probe(struct i2c_client *client, const struct i2c_device_id 
 		return ret;
 	}
 
-	// for (i = 0; i < TAS5825M_NUM_SUPPLIES; i++)
-	// 	tas5825m->supplies[i].supply = tas5825m_supply_names[i];
-
-	// ret = devm_regulator_bulk_get(dev, TAS5825M_NUM_SUPPLIES, tas5825m->supplies);
-	// if (ret != 0) {
-	// 	dev_err(dev, "failed to request supplies: %d\n", ret);
-	// 	return ret;
-	// }
-
 	dev_set_drvdata(dev, tas5825m);
 
 	ret = snd_soc_register_codec(dev, &soc_codec_tas5825m, &tas5825m_dai, 1);
@@ -318,7 +317,11 @@ static int tas5825m_probe(struct i2c_client *client, const struct i2c_device_id 
 
 static int tas5825m_remove(struct i2c_client *client)
 {
-	snd_soc_unregister_codec(&client->dev);
+	struct device *dev = &client->dev;
+	// struct tas5825m_priv *tas5825m = dev_get_drvdata(dev);
+
+	snd_soc_unregister_codec(dev);
+	// regulator_bulk_disable(TAS5825M_NUM_SUPPLIES, tas5825m->supplies);
 
 	return 0;
 }
