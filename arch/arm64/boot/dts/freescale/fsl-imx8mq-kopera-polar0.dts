@@ -591,6 +591,7 @@
 		clock-names = "mclk";
 		// dvdd-supply = <&reg_tas5825m_dvdd>;
 		// pvdd-supply = <&reg_tas5825m_pvdd>;
+		#sound-dai-cells = <0>;
 		status = "okay";
 	};
 };
@@ -687,6 +688,7 @@
 	assigned-clocks = <&clk IMX8MQ_CLK_SAI1>;
 	assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
 	assigned-clock-rates = <1536000>;
+	#sound-dai-cells = <0>;
 	status = "okay";
 };
 
