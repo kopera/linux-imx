@@ -667,6 +667,10 @@
 &usb_dwc3_0 {
 	status = "okay";
 	dr_mode = "host";
+
+	/* USB2 only */
+	phys = <&usb3_phy0 0>;
+	phy-names = "usb2-phy";
 };
 
 &usb3_phy1 {
@@ -680,6 +684,10 @@
 &usb_dwc3_1 {
 	status = "okay";
 	dr_mode = "host";
+
+	/* USB2 only */
+	phys = <&usb3_phy1 0>;
+	phy-names = "usb2-phy";
 };
 
 &sai1 {
