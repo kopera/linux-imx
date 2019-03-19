@@ -81,13 +81,13 @@
 			frame-master = <&sai1_master>;
 
 			sai1_master: cpu {
-			sound-dai = <&sai1>;
-		};
+				sound-dai = <&sai1>;
+			};
 
 			codec {
-			sound-dai = <&tas5825m>;
+				sound-dai = <&tas5825m>;
+			};
 		};
-	};
 	};
 
 	backlight {
