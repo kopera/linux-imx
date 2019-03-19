@@ -549,18 +549,19 @@
 
 	/* Capacitive touch screen */
 	gt911@14 {
-		status = "okay";
 		compatible = "goodix,gt911";
 		reg = <0x14>;
-		reset-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_captouch>;
+		reset-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
+		irq-gpios = <&gpio1 14 GPIO_ACTIVE_HIGH>;
 		interrupt-parent = <&gpio1>;
 		interrupts = <14 0>;
 		touchscreen-size-x = <1024>;
 		touchscreen-size-y = <600>;
 		touchscreen-inverted-x;
 		touchscreen-inverted-y;
+		status = "okay";
 	};
 };
 
