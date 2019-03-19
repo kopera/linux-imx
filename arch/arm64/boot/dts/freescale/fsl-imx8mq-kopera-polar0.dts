@@ -553,7 +553,7 @@
 		reg = <0x14>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_captouch>;
-		reset-gpios = <&gpio4 5 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&gpio4 5 GPIO_ACTIVE_HIGH>;
 		irq-gpios = <&gpio1 14 GPIO_ACTIVE_HIGH>;
 		interrupt-parent = <&gpio1>;
 		interrupts = <14 0>;
