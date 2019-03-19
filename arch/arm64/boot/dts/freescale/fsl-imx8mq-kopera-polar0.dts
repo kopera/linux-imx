@@ -20,7 +20,7 @@
 
 / {
 	model = "KOPERA Polar v0";
-	compatible = "kopera,imx8m-polar0", "variscite,imx8m-dart", "fsl,imx8mq";
+	compatible = "kopera,imx8m-kopera-polar0", "variscite,imx8m-dart", "fsl,imx8mq";
 
 	chosen {
 		bootargs = "console=ttymxc0,115200 earlycon=ec_imx6q,0x30860000,115200";
