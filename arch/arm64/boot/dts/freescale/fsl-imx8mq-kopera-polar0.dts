@@ -339,7 +339,7 @@
 
 		pinctrl_captouch: captouchgrp {
 			fsl,pins = <
-				MX8MQ_IOMUXC_ECSPI2_SS0_GPIO5_IO13 		0x16
+				MX8MQ_IOMUXC_SAI1_RXD3_GPIO4_IO5 		0x16
 				MX8MQ_IOMUXC_GPIO1_IO14_GPIO1_IO14		0x16
 			>;
 		};
@@ -384,9 +384,9 @@
 			>;
 		};
 
-		pinctrl_si4688: si468xgrp {
+		pinctrl_si4688: si4688grp {
 			fsl,pins = <
-				MX8MQ_IOMUXC_SAI3_MCLK_GPIO5_IO2		0x86
+				MX8MQ_IOMUXC_SPDIF_TX_GPIO5_IO3		0x86
 				MX8MQ_IOMUXC_SAI3_RXD_GPIO4_IO30		0xc6
 			>;
 		};
@@ -553,7 +553,7 @@
 		reg = <0x14>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_captouch>;
-		reset-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&gpio4 5 GPIO_ACTIVE_LOW>;
 		irq-gpios = <&gpio1 14 GPIO_ACTIVE_HIGH>;
 		interrupt-parent = <&gpio1>;
 		interrupts = <14 0>;
