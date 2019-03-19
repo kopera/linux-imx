@@ -76,10 +76,10 @@
 
 		simple-audio-card,dai-link@0 {
 			format = "i2s";
-			// bitclock-master = <&sai1_master>;
-			// frame-master = <&sai1_master>;
+			bitclock-master = <&sai1_master>;
+			frame-master = <&sai1_master>;
 
-			cpu {
+			sai1_master: cpu {
 			sound-dai = <&sai1>;
 		};
 
