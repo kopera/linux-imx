@@ -97,7 +97,7 @@ static int si468x_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id si468x_of_match[] = {
-	{ .compatible = "silabs,si468x", },
+	{ .compatible = "silabs,si468x-codec", },
 	{ }
 };
 MODULE_DEVICE_TABLE(of, si468x_of_match);
