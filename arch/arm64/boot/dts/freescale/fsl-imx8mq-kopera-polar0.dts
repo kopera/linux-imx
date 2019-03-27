@@ -76,16 +76,17 @@
 		status = "okay";
 
 		simple-audio-card,dai-link@0 {
+			reg = <0>;
 			format = "i2s";
-			bitclock-master = <&sai1_master>;
-			frame-master = <&sai1_master>;
+			bitclock-master = <&dailink0_master>;
+			frame-master = <&dailink0_master>;
 
-			sai1_master: cpu {
+			dailink0_master: cpu {
 				sound-dai = <&sai1>;
 			};
 
 			codec {
-				sound-dai = <&tas5825m>;
+				sound-dai = <&tas5825m_codec>;
 			};
 		};
 	};
@@ -591,7 +592,7 @@
 	pinctrl-0 = <&pinctrl_i2c4>;
 	status = "okay";
 
-	tas5825m: tas5825m@0x4c {
+	tas5825m_codec: tas5825m@0x4c {
 		compatible = "ti,tas5825m";
 		reg = <0x4c>;
 		clocks = <&clk IMX8MQ_CLK_SAI1_ROOT>;
