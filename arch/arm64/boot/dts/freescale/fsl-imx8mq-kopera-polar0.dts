@@ -833,12 +833,11 @@
 	status = "okay";
 
 	si4688@0 {
-		compatible = "silabs,si468x-spi";
+		compatible = "silabs,si468x-radio";
 		reg = <0>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_si4688>;
 		spi-max-frequency = <10000000>;
-		// resets = <&si4688_reset>;
 		status = "okay";
 	};
 };
