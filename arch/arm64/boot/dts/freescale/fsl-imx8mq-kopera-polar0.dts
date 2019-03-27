@@ -91,6 +91,27 @@
 		};
 	};
 
+	radio {
+		compatible = "simple-audio-card";
+		simple-audio-card,name = "si468x";
+		status = "okay";
+
+		simple-audio-card,dai-link@0 {
+			reg = <0>;
+			format = "i2s";
+			bitclock-master = <&dailink1_master>;
+			frame-master = <&dailink1_master>;
+
+			dailink1_master: cpu {
+				sound-dai = <&sai2>;
+			};
+
+			codec {
+				sound-dai = <&si4688_codec>;
+			};
+		};
+	};
+
 	backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm1 0 1000000 0>;
@@ -121,12 +142,11 @@
 		};
 	};
 
-	// si4688_reset: si4688-reset {
-	// 	compatible = "gpio-reset";
-	// 	reset-gpios = <&gpio5 2 GPIO_ACTIVE_LOW>;
-	// 	reset-delay-us = <500>;
-	// 	#reset-cells = <0>;
-	// };
+	si4688_codec: si468x-codec {
+		compatible = "silabs,si468x-codec";
+		#sound-dai-cells = <0>;
+		status = "okay";
+	};
 };
 
 &clk {
@@ -718,6 +738,7 @@
 	assigned-clocks = <&clk IMX8MQ_CLK_SAI2>;
 	assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
 	assigned-clock-rates = <24576000>;
+	#sound-dai-cells = <0>;
 	status = "okay";
 };
 
