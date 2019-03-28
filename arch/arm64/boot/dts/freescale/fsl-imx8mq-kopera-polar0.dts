@@ -130,6 +130,42 @@
 		status = "okay";
 	};
 
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_gpio_keys>;
+
+		radio {
+			label = "Radio";
+			gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_RADIO>;
+		};
+
+		channel_up {
+			label = "Next Channel";
+			gpios = <&gpio3 20 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_CHANNELUP>;
+		};
+
+		channel_down {
+			label = "Previous Channel";
+			gpios = <&gpio3 22 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_CHANNELDOWN>;
+		};
+
+		volume_up {
+			label = "Volume Up";
+			gpios = <&gpio3 24 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_VOLUMEUP>;
+		};
+
+		volume_down {
+			label = "Volume Down";
+			gpios = <&gpio3 25 GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_VOLUMEDOWN>;
+		};
+	};
+
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -373,7 +409,6 @@
 
 		pinctrl_gpio_keys: keygrp {
 			fsl,pins = <
-				MX8MQ_IOMUXC_SAI5_RXD0_GPIO3_IO21		0xc6
 				MX8MQ_IOMUXC_SAI5_RXD2_GPIO3_IO23		0xc6
 				MX8MQ_IOMUXC_SAI5_RXC_GPIO3_IO20		0xc6
 				MX8MQ_IOMUXC_SAI5_RXD1_GPIO3_IO22		0xc6
