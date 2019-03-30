@@ -764,7 +764,7 @@ static int goodix_ts_probe(struct i2c_client *client,
 
 	ts->cfg_len = goodix_get_cfg_len(ts->id);
 
-	if (ts->gpiod_int && ts->gpiod_rst) {
+	if (ts->gpiod_int && ts->gpiod_rst && !device_property_read_bool(&client->dev, "skip-config-loading")) {
 		/* update device config */
 		ts->cfg_name = devm_kasprintf(&client->dev, GFP_KERNEL,
 					      "goodix_%d_cfg.bin", ts->id);

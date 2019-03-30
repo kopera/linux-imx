@@ -621,6 +621,7 @@
 		interrupts = <14 0>;
 		touchscreen-size-x = <1024>;
 		touchscreen-size-y = <600>;
+		skip-config-loading;
 		status = "okay";
 	};
 };
