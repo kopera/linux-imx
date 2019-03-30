@@ -621,8 +621,6 @@
 		interrupts = <14 0>;
 		touchscreen-size-x = <1024>;
 		touchscreen-size-y = <600>;
-		touchscreen-inverted-x;
-		touchscreen-inverted-y;
 		status = "okay";
 	};
 };
