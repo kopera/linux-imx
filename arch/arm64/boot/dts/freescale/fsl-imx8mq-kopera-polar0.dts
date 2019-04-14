@@ -388,11 +388,11 @@
 			>;
 		};
 
-		// pinctrl_wdog: wdoggrp {
-		// 	fsl,pins = <
-		// 		MX8MQ_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B 		0xc6
-		// 	>;
-		// };
+		pinctrl_wdog: wdoggrp {
+			fsl,pins = <
+				MX8MQ_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B 		0xc6
+			>;
+		};
 
 		pinctrl_pwm1: pwm1grp {
 			fsl,pins = <
@@ -789,6 +789,13 @@
 };
 
 &vpu {
+	status = "okay";
+};
+
+&wdog1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_wdog>;
+	fsl,wdog_b;
 	status = "okay";
 };
 
