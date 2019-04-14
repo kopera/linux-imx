@@ -136,7 +136,7 @@
 		pinctrl-0 = <&pinctrl_gpio_keys>;
 
 		radio {
-			label = "Play/Pause";
+			label = "Play Pause";
 			gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_PLAYPAUSE>;
 		};
