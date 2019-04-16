@@ -632,11 +632,16 @@
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
 
-	/* mcp79410 RTC module */
 	rtc@0x6f {
-		status = "okay";
 		compatible = "microchip,mcp7941x";
 		reg = <0x6f>;
+		status = "okay";
+	};
+
+	mma8653fc@1d {
+		compatible = "fsl,mma8653";
+		reg = <0x1d>;
+		status = "okay";
 	};
 };
 
