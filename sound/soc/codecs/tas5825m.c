@@ -296,7 +296,7 @@ static int tas5825m_probe(struct i2c_client *client, const struct i2c_device_id 
 		dev_err(dev, "failed to allocate register map: %d\n", ret);
 		return ret;
 	}
-	tas5825m->volume = 100;         //100, -10dB
+	tas5825m->volume = 80;         //80, -30dB
 
 	ret = regmap_register_patch(tas5825m->regmap, tas5825m_init_sequence, ARRAY_SIZE(tas5825m_init_sequence));
 	if (ret != 0) {
