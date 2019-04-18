@@ -135,31 +135,31 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_gpio_keys>;
 
-		radio {
+		play_pause {
 			label = "Play Pause";
-			gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio3 24 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_PLAYPAUSE>;
 		};
 
-		channel_up {
+		previous_song {
 			label = "Previous Song";
-			gpios = <&gpio3 20 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_PREVIOUSSONG>;
 		};
 
-		channel_down {
+		next_song {
 			label = "Next Song";
-			gpios = <&gpio3 22 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio3 20 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_NEXTSONG>;
 		};
 
-		volume_up {
+		volume_down {
 			label = "Volume Down";
-			gpios = <&gpio3 24 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio3 23 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_VOLUMEDOWN>;
 		};
 
-		volume_down {
+		volume_up {
 			label = "Volume Up";
 			gpios = <&gpio3 25 GPIO_ACTIVE_HIGH>;
 			linux,code = <KEY_VOLUMEUP>;
