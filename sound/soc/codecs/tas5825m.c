@@ -401,25 +401,22 @@ static int tas5825m_i2c_probe(struct i2c_client *client, const struct i2c_device
 		return ret;
 	}
 
-	msleep(10);
+	msleep(100);
 
 	ret = regmap_register_patch(priv->regmap,
 	                            tas5825m_init_sequence, ARRAY_SIZE(tas5825m_init_sequence));
 	if (ret != 0) {
-		dev_err(dev, "failed to initialize TAS5825M: %d\n",ret);
+		dev_err(dev, "failed to start initialization: %d\n", ret);
 		return ret;
 	}
 
-	msleep(5);
-
-	ret = regmap_register_patch(priv->regmap,
-	                            tas5825m_config_sequence, ARRAY_SIZE(tas5825m_config_sequence));
+	ret = regmap_async_complete(priv->regmap);
 	if (ret != 0) {
-		dev_err(dev, "failed to configure TAS5825M: %d\n",ret);
+		dev_err(dev, "failed to complete initialization: %d\n", ret);
 		return ret;
 	}
 
-	msleep(5);
+	msleep(500);
 
 	ret = snd_soc_register_codec(dev,
 	                             &soc_codec_dev_tas5825m,
