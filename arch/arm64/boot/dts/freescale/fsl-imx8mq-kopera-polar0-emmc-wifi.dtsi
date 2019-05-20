@@ -1,0 +1,92 @@
+/*
+ * Copyright 2017 NXP
+ * Copyright 2018-2019 Variscite Ltd.
+ * Copyright 2019 KOPERA
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/ {
+	wifi_reg: wifi_en {
+		compatible = "regulator-fixed";
+		regulator-name = "WIFI_REG_ON";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+	};
+
+	wifi_pwrseq: wifi-pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios = <&gpio3 2 GPIO_ACTIVE_LOW>;
+		post-power-on-delay-ms = <10000>;
+	};
+};
+
+/* Bluetooth */
+&uart4 {
+	status = "okay";
+
+	bluetooth {
+		compatible = "brcm,bcm43438-bt";
+		max-speed = <3000000>;
+		shutdown-gpios =
+			<&gpio3 4 GPIO_ACTIVE_LOW>,
+			<&gpio5 5 GPIO_ACTIVE_HIGH>;
+	};
+};
+
+/* WIFI voltage select pin */
+&iomuxc {
+	imx8m-var-dart {
+		pinctrl_usdhc2_vsel: usdhc2grpvsel {
+			fsl,pins = <
+				MX8MQ_IOMUXC_GPIO1_IO04_GPIO1_IO4	0xc1
+			>;
+		};
+	};
+};
+
+/* Set WIFI SDIO voltage at 1.8V */
+&gpio1 {
+	wifi_vsel_hog {
+		gpio-hog;
+		gpios = <4 0>;
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_usdhc2_vsel>;
+		line-name = "wifi_vsel";
+	};
+};
+
+/* WIFI */
+&usdhc2 {
+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_wifi>;
+	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_wifi>;
+	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_wifi>;
+	bus-width = <4>;
+	non-removable;
+	vmmc-supply = <&wifi_reg>;
+	mmc-pwrseq = <&wifi_pwrseq>;
+	status = "okay";
+
+	brcmf: wifi@1 {
+		reg = <1>;
+		compatible = "brcm,bcm4329-fmac";
+		status = "okay";
+	};
+};
+
+// &fec1 {
+// 	pinctrl-names = "default";
+// 	pinctrl-0 = <&pinctrl_fec1>;
+// };
