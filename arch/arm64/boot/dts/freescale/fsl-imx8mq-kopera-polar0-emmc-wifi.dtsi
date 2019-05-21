@@ -23,12 +23,6 @@
 		gpio = <&gpio1 8 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 	};
-
-	wifi_pwrseq: wifi-pwrseq {
-		compatible = "mmc-pwrseq-simple";
-		reset-gpios = <&gpio3 2 GPIO_ACTIVE_LOW>;
-		post-power-on-delay-ms = <10000>;
-	};
 };
 
 /* Bluetooth */
@@ -44,31 +38,35 @@
 	};
 };
 
-/* WIFI voltage select pin */
-&iomuxc {
-	imx8m-var-dart {
-		pinctrl_usdhc2_vsel: usdhc2grpvsel {
-			fsl,pins = <
-				MX8MQ_IOMUXC_GPIO1_IO04_GPIO1_IO4	0xc1
-			>;
-		};
-	};
-};
-
 /* Set WIFI SDIO voltage at 1.8V */
 &gpio1 {
-	wifi_vsel_hog {
+	usdhc2_vsel_hog {
 		gpio-hog;
 		gpios = <4 0>;
 		output-high;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_usdhc2_vsel>;
-		line-name = "wifi_vsel";
+		line-name = "usdhc2_vsel";
+	};
+};
+
+/* Set SD2 to Wifi SDIO */
+&gpio3 {
+	usdhc2_fsel_hog {
+		gpio-hog;
+		gpios = <2 0>;
+		output-high;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_usdhc2_fsel>;
+		line-name = "usdhc2_fsel";
 	};
 };
 
 /* WIFI */
 &usdhc2 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_wifi>;
 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_wifi>;
@@ -76,7 +74,6 @@
 	bus-width = <4>;
 	non-removable;
 	vmmc-supply = <&wifi_reg>;
-	mmc-pwrseq = <&wifi_pwrseq>;
 	status = "okay";
 
 	brcmf: wifi@1 {
