@@ -30,7 +30,17 @@
 
 /* Bluetooth */
 &uart4 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_uart4>, <&pinctrl_bluetooth>;
 	status = "okay";
+
+	bluetooth {
+		compatible = "brcm,bcm43438-bt";
+		max-speed = <3000000>;
+		shutdown-gpios =
+			<&gpio3 4 GPIO_ACTIVE_LOW>,
+			<&gpio5 5 GPIO_ACTIVE_HIGH>;
+	};
 };
 
 /* Set WIFI SDIO voltage at 1.8V */
