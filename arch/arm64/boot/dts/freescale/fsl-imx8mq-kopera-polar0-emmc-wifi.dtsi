@@ -25,8 +25,36 @@
 			enable-active-high;
 			startup-delay-us = <20000>;
 		};
+
+		bluetooth_vbat_reg: bluetooth_vbat_reg {
+			compatible = "regulator-fixed";
+			regulator-name = "BLUETOOTH_VBAT_REG";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+		};
+
+		bluetooth_vddio_reg: bluetooth_vddio_reg {
+			compatible = "regulator-fixed";
+			regulator-name = "BLUETOOTH_VDDIO_REG";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+		};
 	};
 };
+
+
+/* Disable UART4 buffer */
+&gpio5 {
+	uart4_buf_en_hog {
+		gpio-hog;
+		gpios = <5 0>;
+		output-low;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_uart4_buf_en>;
+		line-name = "uart4_buf_en";
+	};
+};
+
 
 /* Bluetooth */
 &uart4 {
@@ -35,11 +63,11 @@
 	status = "okay";
 
 	bluetooth {
-		compatible = "brcm,bcm43438-bt";
+		compatible = "brcm,bcm4330-bt";
 		max-speed = <3000000>;
-		shutdown-gpios =
-			<&gpio3 4 GPIO_ACTIVE_LOW>,
-			<&gpio5 5 GPIO_ACTIVE_HIGH>;
+		shutdown-gpios = <&gpio3 4 GPIO_ACTIVE_HIGH>;
+		vbat-supply = <&bluetooth_vbat_reg>;
+		vddio-supply = <&bluetooth_vddio_reg>;
 	};
 };
 
