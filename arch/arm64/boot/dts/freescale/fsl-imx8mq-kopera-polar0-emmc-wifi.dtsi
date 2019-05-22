@@ -15,27 +15,22 @@
  */
 
 / {
-	wifi_reg: wifi_en {
-		compatible = "regulator-fixed";
-		regulator-name = "WIFI_REG_ON";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpio1 8 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
+	regulators {
+		wifi_reg: wifi_reg {
+			compatible = "regulator-fixed";
+			regulator-name = "WIFI_REG";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			startup-delay-us = <20000>;
+		};
 	};
 };
 
 /* Bluetooth */
 &uart4 {
 	status = "okay";
-
-	bluetooth {
-		compatible = "brcm,bcm43438-bt";
-		max-speed = <3000000>;
-		shutdown-gpios =
-			<&gpio3 4 GPIO_ACTIVE_LOW>,
-			<&gpio5 5 GPIO_ACTIVE_HIGH>;
-	};
 };
 
 /* Set WIFI SDIO voltage at 1.8V */
@@ -50,7 +45,7 @@
 	};
 };
 
-/* Set SD2 to Wifi SDIO */
+/* Set SDIO function to WIFI */
 &gpio3 {
 	usdhc2_fsel_hog {
 		gpio-hog;
@@ -72,14 +67,13 @@
 	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_wifi>;
 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_wifi>;
 	bus-width = <4>;
-	non-removable;
 	vmmc-supply = <&wifi_reg>;
+	non-removable;
 	status = "okay";
 
 	brcmf: wifi@1 {
 		reg = <1>;
 		compatible = "brcm,bcm4329-fmac";
-		status = "okay";
 	};
 };
 

@@ -428,11 +428,13 @@
 			>;
 		};
 
-		/* WiFi */
+		/* WIFI */
 		pinctrl_wifi: wifigrp {
 			fsl,pins = <
-				MX8MQ_IOMUXC_GPIO1_IO08_GPIO1_IO8           0xc1    /* WIFI_REG_ON   */
-				MX8MQ_IOMUXC_GPIO1_IO00_ANAMIX_REF_CLK_32K  0xc1    /* WIFI_CLK_32K  */
+				MX8MQ_IOMUXC_GPIO1_IO04_GPIO1_IO4           0xc1 /* USDHC2_VSEL */
+				MX8MQ_IOMUXC_GPIO1_IO08_GPIO1_IO8           0xc1 /* WIFI_PWR_ON   */
+				MX8MQ_IOMUXC_NAND_CE1_B_GPIO3_IO2           0xc1 /* USDHC2_FSEL   */
+				MX8MQ_IOMUXC_GPIO1_IO00_ANAMIX_REF_CLK_32K  0xc1 /* WIFI_CLK_32K  */
 			>;
 		};
 
