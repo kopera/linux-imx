@@ -403,6 +403,12 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6dl-tx6u-81xx-mb7.dtb \
 	imx6dl-udoo.dtb \
 	imx6dl-sabresd-enetirq.dtb \
+	imx6dl-var-som-cap.dtb \
+	imx6dl-var-som-res.dtb \
+	imx6dl-var-som-solo-cap.dtb \
+	imx6dl-var-som-solo-res.dtb \
+	imx6dl-var-som-solo-vsc.dtb \
+	imx6dl-var-som-vsc.dtb \
 	imx6dl-wandboard.dtb \
 	imx6dl-wandboard-revb1.dtb \
 	imx6dqscm-1gb-qwks-rev2-fix-ldo.dtb \
@@ -482,6 +488,13 @@ dtb-$(CONFIG_SOC_IMX6Q) += \
 	imx6q-tx6q-11x0-mb7.dtb \
 	imx6q-udoo.dtb \
 	imx6q-utilite-pro.dtb \
+	imx6q-var-dart.dtb \
+	imx6q-var-som-cap.dtb \
+	imx6q-var-som-res.dtb \
+	imx6q-var-som-vsc.dtb \
+	imx6qp-var-som-cap.dtb \
+	imx6qp-var-som-res.dtb \
+	imx6qp-var-som-vsc.dtb \
 	imx6q-wandboard.dtb \
 	imx6q-wandboard-revb1.dtb \
 	imx6q-zii-rdu2.dtb \
@@ -563,10 +576,16 @@ dtb-$(CONFIG_SOC_IMX6UL) += \
 	imx6ul-14x14-lpddr2-arm2.dtb \
 	imx6ul-14x14-evk-pf1550.dtb \
 	imx6ul-9x9-evk.dtb \
-	imx6ul-9x9-evk-csi.dtb \
 	imx6ul-9x9-evk-btwifi.dtb \
 	imx6ul-9x9-evk-btwifi-oob.dtb \
-	imx6ul-9x9-evk-ldo.dtb
+	imx6ul-9x9-evk-csi.dtb \
+	imx6ul-9x9-evk-ldo.dtb \
+	imx6ul-var-dart-5g-emmc_wifi.dtb \
+	imx6ul-var-dart-5g-nand_wifi.dtb \
+	imx6ul-var-dart-emmc_wifi.dtb \
+	imx6ul-var-dart-nand_wifi.dtb \
+	imx6ul-var-dart-sd_emmc.dtb \
+	imx6ul-var-dart-sd_nand.dtb
 dtb-$(CONFIG_SOC_IMX6ULL) += \
 	imx6ull-14x14-ddr3-arm2.dtb \
 	imx6ull-14x14-ddr3-arm2-adc.dtb \
@@ -593,12 +612,13 @@ dtb-$(CONFIG_SOC_IMX6ULL) += \
 	imx6ull-9x9-evk.dtb \
 	imx6ull-9x9-evk-btwifi.dtb \
 	imx6ull-9x9-evk-btwifi-oob.dtb \
-	imx6ull-9x9-evk-ldo.dtb		\
-	imx6ulz-14x14-evk.dtb \
-	imx6ulz-14x14-evk-btwifi.dtb \
-	imx6ulz-14x14-evk-btwifi-oob.dtb \
-	imx6ulz-14x14-evk-emmc.dtb \
-	imx6ulz-14x14-evk-gpmi-weim.dtb
+	imx6ull-9x9-evk-ldo.dtb \
+	imx6ull-var-dart-5g-emmc_wifi.dtb \
+	imx6ull-var-dart-5g-nand_wifi.dtb \
+	imx6ull-var-dart-emmc_wifi.dtb \
+	imx6ull-var-dart-nand_wifi.dtb \
+	imx6ull-var-dart-sd_emmc.dtb \
+	imx6ull-var-dart-sd_nand.dtb
 dtb-$(CONFIG_SOC_IMX6SLL) += \
 	imx6sll-lpddr2-arm2.dtb \
 	imx6sll-lpddr3-arm2.dtb \
@@ -642,7 +662,11 @@ dtb-$(CONFIG_SOC_IMX7D) += \
 	imx7d-12x12-lpddr3-arm2-sai.dtb \
 	imx7d-12x12-lpddr3-arm2-mqs.dtb \
 	imx7d-12x12-lpddr3-arm2-pcie.dtb \
-	imx7d-19x19-lpddr2-arm2.dtb
+	imx7d-19x19-lpddr2-arm2.dtb\
+	imx7d-var-som-emmc.dtb \
+	imx7d-var-som-nand.dtb \
+	imx7d-var-som-emmc-m4.dtb \
+	imx7d-var-som-nand-m4.dtb
 dtb-$(CONFIG_SOC_IMX7ULP) += \
 	imx7ulp-14x14-arm2.dtb \
 	imx7ulp-evk.dtb \
