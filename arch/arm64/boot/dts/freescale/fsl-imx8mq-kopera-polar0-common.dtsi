@@ -50,6 +50,7 @@
 	sound-tas5825m {
 		compatible = "simple-audio-card";
 		simple-audio-card,name = "tas5825m";
+		simple-audio-card,aux-devs = <&pcm1789>;
 		// simple-audio-card,widgets =
 		// 		"Speaker", "Speaker";
 		// simple-audio-card,routing =
@@ -57,7 +58,6 @@
 		status = "okay";
 
 		simple-audio-card,dai-link@0 {
-			reg = <0>;
 			format = "i2s";
 			bitclock-master = <&dailink0_master>;
 			frame-master = <&dailink0_master>;
@@ -67,7 +67,7 @@
 			};
 
 			codec {
-				sound-dai = <&tas5825m_codec>;
+				sound-dai = <&tas5825m>;
 			};
 		};
 	};
@@ -78,7 +78,6 @@
 		status = "okay";
 
 		simple-audio-card,dai-link@0 {
-			reg = <0>;
 			format = "i2s";
 			bitclock-master = <&dailink1_master>;
 			frame-master = <&dailink1_master>;
@@ -94,8 +93,9 @@
 	};
 
 	si468x_codec: si468x-codec {
-		compatible = "silabs,si468x-codec";
 		#sound-dai-cells = <0>;
+
+		compatible = "silabs,si468x-codec";
 		status = "okay";
 	};
 
@@ -469,6 +469,13 @@
 			>;
 		};
 
+		/* DAC */
+		pinctrl_pcm1789: pcm1789grp {
+			fsl,pins = <
+				MX8MQ_IOMUXC_SAI5_RXD0_GPIO3_IO21           0x86
+			>;
+		};
+
 		/* DAB/FM Radio */
 		pinctrl_si4688: si4688grp {
 			fsl,pins = <
@@ -685,6 +692,17 @@
 		reg = <0x1d>;
 		status = "okay";
 	};
+
+	pcm1789: pcm1789@4c {
+		#sound-dai-cells = <0>;
+
+		compatible = "ti,pcm1789";
+		reg = <0x4c>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_pcm1789>;
+		reset-gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
+		status = "okay";
+	};
 };
 
 &i2c4 {
@@ -693,7 +711,7 @@
 	pinctrl-0 = <&pinctrl_i2c4>;
 	status = "okay";
 
-	tas5825m_codec: tas5825m@4c {
+	tas5825m: tas5825m@4c {
 		compatible = "ti,tas5825m";
 		reg = <0x4c>;
 		clocks = <&clk IMX8MQ_CLK_SAI1_ROOT>;
