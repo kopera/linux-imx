@@ -563,22 +563,22 @@
 
 		display-timings {
 			lvds {
-				clock-frequency = <50000000>;
+				clock-frequency = <51200000>;
 				hactive = <1024>;
 				vactive = <600>;
 
-				hback-porch = <220>;
-				hfront-porch = <50>;
-				hsync-len = <50>;
+				hback-porch = <40>;
+				hfront-porch = <40>;
+				hsync-len = <48>;
 
-				vback-porch = <26>;
-				vfront-porch = <3>;
-				vsync-len = <6>;
+				vback-porch = <29>;
+				vfront-porch = <13>;
+				vsync-len = <3>;
 
+				hsync-active = <0>;
+				vsync-active = <0>;
 				de-active = <1>;
-				hsync-active = <1>;
-				vsync-active = <1>;
-				pixelclk-active = <1>;
+				pixelclk-active = <0>;
 			};
 		};
 
@@ -807,16 +807,6 @@
 	status = "okay";
 };
 
-&rpmsg{
-	/*
-	 * 64K for one rpmsg instance:
-	 * --0xb8000000~0xb800ffff: pingpong
-	 */
-	vdev-nums = <1>;
-	reg = <0x0 0xb8000000 0x0 0x10000>;
-	status = "okay";
-};
-
 /* A53 */
 &A53_0 {
 	operating-points = <
@@ -827,22 +817,6 @@
 		800000  900000
 	>;
 	dc-supply = <&reg_cpu_dvfs>;
-};
-
-/* LVDS */
-&mipi_dsi {
-	status = "disabled";
-	assigned-clocks = <&clk IMX8MQ_CLK_DSI_PHY_REF>,
-			  <&clk IMX8MQ_CLK_DSI_CORE>,
-			  <&clk IMX8MQ_VIDEO_PLL1_REF_SEL>,
-			  <&clk IMX8MQ_VIDEO_PLL1>;
-	assigned-clock-parents = <&clk IMX8MQ_VIDEO_PLL1_OUT>,
-				 <&clk IMX8MQ_SYS1_PLL_266M>,
-				 <&clk IMX8MQ_CLK_25M>;
-	assigned-clock-rates = <24000000>,
-			       <266000000>,
-			       <0>,
-			       <599999999>;
 };
 
 &mipi_dsi_bridge {
