@@ -63,7 +63,7 @@
 
 &mipi_dsi_bridge {
 	status = "okay";
-	clock-drop-level = <4>;
+	clock-drop-level = <1>;
 };
 
 &pwm1 {
