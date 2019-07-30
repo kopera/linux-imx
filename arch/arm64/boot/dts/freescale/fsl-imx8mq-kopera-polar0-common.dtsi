@@ -550,7 +550,6 @@
 
 	dsi_lvds_bridge: sn65dsi84@2c {
 		compatible = "ti,sn65dsi83";
-		clock-drop-level = <1>;
 		reg = <0x2c>;
 		ti,dsi-lanes = <4>;
 		ti,lvds-format = <2>;
@@ -564,7 +563,7 @@
 
 		display-timings {
 			lvds {
-				clock-frequency = <80000000>;
+				clock-frequency = <50000000>;
 				hactive = <1024>;
 				vactive = <600>;
 
@@ -573,7 +572,7 @@
 				hsync-len = <46>;
 
 				vback-porch = <19>;
-				vfront-porch = <4>;
+				vfront-porch = <14>;
 				vsync-len = <2>;
 
 				hsync-active = <0>;
