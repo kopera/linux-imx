@@ -207,6 +207,7 @@ static int sn65dsi83_parse_dt(struct device_node *np,
 {
     struct device *dev = &sn65dsi83->brg->client->dev;
     u32 num_lanes = 2, bpp = 24, format = 2, width = 149, height = 93;
+    bool enable_test_pattern = 0;
     struct device_node *endpoint;
 
     endpoint = of_graph_get_next_endpoint(np, NULL);
@@ -224,6 +225,7 @@ static int sn65dsi83_parse_dt(struct device_node *np,
     of_property_read_u32(np, "ti,lvds-bpp", &bpp);
     of_property_read_u32(np, "ti,width-mm", &width);
     of_property_read_u32(np, "ti,height-mm", &height);
+    enable_test_pattern = of_property_read_bool(np, "enable-test-pattern");
 
     if (num_lanes < 1 || num_lanes > 4) {
         dev_err(dev, "Invalid dsi-lanes: %d\n", num_lanes);
@@ -242,6 +244,8 @@ static int sn65dsi83_parse_dt(struct device_node *np,
 
     sn65dsi83->brg->width_mm = width;
     sn65dsi83->brg->height_mm = height;
+    sn65dsi83->brg->height_mm = height;
+    sn65dsi83->brg->enable_test_pattern = enable_test_pattern;
 
     /* Read default timing if there is not device tree node for */
     if ((of_get_videomode(np, &sn65dsi83->brg->vm, 0)) < 0)

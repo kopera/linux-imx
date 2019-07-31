@@ -560,6 +560,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_lvds>;
 		status = "disabled";
+		/* enable-test-pattern; */
 
 		display-timings {
 			lvds {
