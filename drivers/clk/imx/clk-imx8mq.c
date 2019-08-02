@@ -604,7 +604,7 @@ static void __init imx8mq_clocks_init(struct device_node *ccm_node)
 	/* config video_pll1 clock */
         /* TBD : yet to figure out if there is any side-effect of this fix*/
         clk_set_parent(clks[IMX8MQ_VIDEO_PLL1_REF_SEL], clks[IMX8MQ_CLK_25M]);
-        clk_set_rate(clks[IMX8MQ_VIDEO_PLL1], 750000000);
+        clk_set_rate(clks[IMX8MQ_VIDEO_PLL1], 500000000);
 
 	/* increase NOC clock to achieve best DDR access performance */
 	clk_set_rate(clks[IMX8MQ_CLK_NOC], clk_get_rate(clks[IMX8MQ_SYS1_PLL_800M]));
