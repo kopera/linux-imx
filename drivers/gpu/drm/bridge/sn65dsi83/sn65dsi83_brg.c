@@ -91,15 +91,19 @@
 #define SN65DSI83_CHB_VERT_FRONTPORCH 0x3B
 #define SN65DSI83_CHA_ERR             0xE5
 #define SN65DSI83_TEST_PATTERN        0x3C
+    #define CHA_TEST_PATTERN_SHIFT	4
+
 #define SN65DSI83_REG_3D              0x3D
 #define SN65DSI83_REG_3E              0x3E
 
 static int sn65dsi83_brg_power_on(struct sn65dsi83_brg *brg)
 {
     dev_dbg(&brg->client->dev,"%s\n",__func__);
+    gpiod_set_value_cansleep(brg->gpio_enable, 0);
+    msleep(10);
     gpiod_set_value_cansleep(brg->gpio_enable, 1);
-    /* Wait for 1ms for the internal voltage regulator to stabilize */
-    msleep(1);
+    /* Wait for atleast 10ms for the internal voltage regulator to stabilize */
+    msleep(10);
 
     return 0;
 }
@@ -157,10 +161,11 @@ static int sn65dsi83_brg_start_stream(struct sn65dsi83_brg *brg)
     /* Set the PLL_EN bit (CSR 0x0D.0) */
     SN65DSI83_WRITE(SN65DSI83_PLL_EN, 0x1);
     /* Wait for the PLL_LOCK bit to be set (CSR 0x0A.7) */
-    msleep(200);
+    msleep(10);
 
     /* Perform SW reset to apply changes */
     SN65DSI83_WRITE(SN65DSI83_SOFT_RESET, 0x01);
+    msleep(10);
 
     /* Read CHA Error register */
     regval = SN65DSI83_READ(SN65DSI83_CHA_ERR);
@@ -233,6 +238,7 @@ static int sn65dsi83_brg_configure(struct sn65dsi83_brg *brg)
     /* Reset PLL_EN and SOFT_RESET registers */
     SN65DSI83_WRITE(SN65DSI83_SOFT_RESET,0x00);
     SN65DSI83_WRITE(SN65DSI83_PLL_EN,0x00);
+    msleep(10);
 
     /* LVDS clock setup */
     if  ((25000000 <= PIXCLK) && (PIXCLK < 37500000))
@@ -326,7 +332,15 @@ static int sn65dsi83_brg_configure(struct sn65dsi83_brg *brg)
     SN65DSI83_WRITE(SN65DSI83_CHA_HORZ_FRONTPORCH,LOW(HFP));
     SN65DSI83_WRITE(SN65DSI83_CHA_VERT_FRONTPORCH,LOW(VFP));
 
-    SN65DSI83_WRITE(SN65DSI83_TEST_PATTERN,0x00);
+    if (brg->enable_test_pattern)
+    {
+        SN65DSI83_WRITE(SN65DSI83_TEST_PATTERN,0x10);
+    }
+    else
+    {
+        SN65DSI83_WRITE(SN65DSI83_TEST_PATTERN,0x00);
+    }
+
     SN65DSI83_WRITE(SN65DSI83_REG_3D,0x00);
     SN65DSI83_WRITE(SN65DSI83_REG_3E,0x00);
 

@@ -2,6 +2,7 @@
  * Licensed under the GPL-2.
  */
 
+#include <linux/backlight.h>
 #include <linux/device.h>
 #include <linux/gpio/consumer.h>
 #include <linux/module.h>
@@ -34,6 +35,9 @@ struct sn65dsi83 {
     struct device_node *host_node;
     struct mipi_dsi_device *dsi;
     struct sn65dsi83_brg *brg;
+
+    struct gpio_desc *panel_enable;
+    struct backlight_device *backlight;
 };
 
 static int sn65dsi83_attach_dsi(struct sn65dsi83 *sn65dsi83);
@@ -144,15 +148,39 @@ static void sn65dsi83_bridge_enable(struct drm_bridge *bridge)
 {
     struct sn65dsi83 *sn65dsi83 = bridge_to_sn65dsi83(bridge);
     dev_dbg(DRM_DEVICE(bridge),"%s\n",__func__);
+    if (sn65dsi83->panel_enable) {
+        gpiod_set_value(sn65dsi83->panel_enable, 0);
+        msleep(500);
+    }
     sn65dsi83->brg->funcs->setup(sn65dsi83->brg);
+    if (sn65dsi83->panel_enable) {
+        gpiod_set_value(sn65dsi83->panel_enable, 1);
+        msleep(1);
+    }
     sn65dsi83->brg->funcs->start_stream(sn65dsi83->brg);
+    if (sn65dsi83->backlight) {
+        msleep(200);
+        sn65dsi83->backlight->props.state &= ~BL_CORE_FBBLANK;
+        sn65dsi83->backlight->props.power = FB_BLANK_UNBLANK;
+        backlight_update_status(sn65dsi83->backlight);
+    }
 }
 
 static void sn65dsi83_bridge_disable(struct drm_bridge *bridge)
 {
     struct sn65dsi83 *sn65dsi83 = bridge_to_sn65dsi83(bridge);
     dev_dbg(DRM_DEVICE(bridge),"%s\n",__func__);
+    if (sn65dsi83->backlight) {
+        sn65dsi83->backlight->props.power = FB_BLANK_POWERDOWN;
+        sn65dsi83->backlight->props.state |= BL_CORE_FBBLANK;
+        backlight_update_status(sn65dsi83->backlight);
+        msleep(200);
+    }
     sn65dsi83->brg->funcs->stop_stream(sn65dsi83->brg);
+    if (sn65dsi83->panel_enable) {
+        gpiod_set_value(sn65dsi83->panel_enable, 0);
+        msleep(1);
+    }
     sn65dsi83->brg->funcs->power_off(sn65dsi83->brg);
 }
 
@@ -207,7 +235,8 @@ static int sn65dsi83_parse_dt(struct device_node *np,
 {
     struct device *dev = &sn65dsi83->brg->client->dev;
     u32 num_lanes = 2, bpp = 24, format = 2, width = 149, height = 93;
-    struct device_node *endpoint;
+    bool enable_test_pattern = 0;
+    struct device_node *endpoint, *backlight;
 
     endpoint = of_graph_get_next_endpoint(np, NULL);
     if (!endpoint)
@@ -219,11 +248,21 @@ static int sn65dsi83_parse_dt(struct device_node *np,
         return -ENODEV;
     }
 
+    backlight = of_parse_phandle(dev->of_node, "backlight", 0);
+    if (backlight) {
+        sn65dsi83->backlight = of_find_backlight_by_node(backlight);
+        of_node_put(backlight);
+
+        if (!sn65dsi83->backlight)
+            return -EPROBE_DEFER;
+    }
+
     of_property_read_u32(np, "ti,dsi-lanes", &num_lanes);
     of_property_read_u32(np, "ti,lvds-format", &format);
     of_property_read_u32(np, "ti,lvds-bpp", &bpp);
     of_property_read_u32(np, "ti,width-mm", &width);
     of_property_read_u32(np, "ti,height-mm", &height);
+    enable_test_pattern = of_property_read_bool(np, "enable-test-pattern");
 
     if (num_lanes < 1 || num_lanes > 4) {
         dev_err(dev, "Invalid dsi-lanes: %d\n", num_lanes);
@@ -237,11 +276,15 @@ static int sn65dsi83_parse_dt(struct device_node *np,
         return PTR_ERR(sn65dsi83->brg->gpio_enable);
     }
 
+    sn65dsi83->panel_enable = devm_gpiod_get_optional(dev, "panel", GPIOD_OUT_LOW);
+
     sn65dsi83->brg->format = format;
     sn65dsi83->brg->bpp = bpp;
 
     sn65dsi83->brg->width_mm = width;
     sn65dsi83->brg->height_mm = height;
+    sn65dsi83->brg->height_mm = height;
+    sn65dsi83->brg->enable_test_pattern = enable_test_pattern;
 
     /* Read default timing if there is not device tree node for */
     if ((of_get_videomode(np, &sn65dsi83->brg->vm, 0)) < 0)

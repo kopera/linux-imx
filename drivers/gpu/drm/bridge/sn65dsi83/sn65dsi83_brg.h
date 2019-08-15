@@ -27,6 +27,8 @@ struct sn65dsi83_brg {
 
     u8 num_dsi_lanes;
     struct sn65dsi83_brg_funcs *funcs;
+
+    bool enable_test_pattern;
 };
 struct sn65dsi83_brg *sn65dsi83_brg_get(void);
 
