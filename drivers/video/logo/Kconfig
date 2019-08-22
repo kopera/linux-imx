@@ -27,8 +27,8 @@ config LOGO_LINUX_CLUT224
 	bool "Standard 224-color Linux logo"
 	default y
 
-config LOGO_POLAR_CLUT224
-	bool "224-color Polar logo"
+config LOGO_KOPERA_CLUT224
+	bool "224-color Kopera specific logo"
 	default y
 
 config LOGO_BLACKFIN_VGA16

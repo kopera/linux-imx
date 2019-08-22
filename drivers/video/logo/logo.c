@@ -78,9 +78,9 @@ const struct linux_logo * __ref fb_find_logo(int depth)
 		/* Generic Linux logo */
 		logo = &logo_linux_clut224;
 #endif
-#ifdef CONFIG_LOGO_POLAR_CLUT224
-		/* Polar linux logo */
-		logo = &logo_polar_clut224;
+#ifdef CONFIG_LOGO_KOPERA_CLUT224
+		/* Kopera linux logo */
+		logo = &logo_kopera_clut224;
 #endif
 #ifdef CONFIG_LOGO_BLACKFIN_CLUT224
 		/* Blackfin Linux logo */
