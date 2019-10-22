@@ -921,7 +921,7 @@
 	assigned-clocks = <&clk IMX8MM_CLK_SAI2_SRC>,
 			<&clk IMX8MM_CLK_SAI2_DIV>;
 	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
-	assigned-clock-rates = <0>, <1536000>;
+	assigned-clock-rates = <0>, <6144000>;
 	status = "okay";
 };
 
