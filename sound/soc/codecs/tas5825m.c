@@ -697,8 +697,8 @@ static const struct snd_soc_component_driver soc_component_dev_tas5825m = {
 */
 
 static int tas5825m_dai_hw_params(struct snd_pcm_substream *substream,
-                             struct snd_pcm_hw_params *params,
-                             struct snd_soc_dai *dai)
+                                  struct snd_pcm_hw_params *params,
+                                  struct snd_soc_dai *dai)
 {
 	struct snd_soc_component *component = dai->component;
 	struct tas5825m_priv *priv = snd_soc_component_get_drvdata(component);
@@ -715,10 +715,10 @@ static int tas5825m_dai_hw_params(struct snd_pcm_substream *substream,
 		fsmode = TAS5825M_REG_SIG_CH_CTRL_FSMODE_44_1KHZ;
 		break;
 	case 48000:
-		fsmode = TAS5825M_REG_SIG_CH_CTRL_FSMODE_48KHZ;
+		fsmode = TAS5825M_REG_SIG_CH_CTRL_FSMODE_AUTO;
 		break;
 	case 96000:
-		fsmode = TAS5825M_REG_SIG_CH_CTRL_FSMODE_96KHZ;
+		fsmode = TAS5825M_REG_SIG_CH_CTRL_FSMODE_AUTO;
 		break;
 	default:
 		dev_err(dai->dev, "unsupported sample rate: %u\n", rate);
@@ -759,7 +759,6 @@ static int tas5825m_dai_hw_params(struct snd_pcm_substream *substream,
 
 	return 0;
 }
-
 
 static int tas5825m_dai_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
 {
