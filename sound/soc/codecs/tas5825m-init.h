@@ -7740,6 +7740,7 @@ static const struct reg_sequence tas5825m_init_sequence[] =
     { 0x03, 0x03 },
     { 0x00, 0x00 },
     { 0x7f, 0x00 },
+    { 0x46, 0x08 }, /* Don't reset the DSP coefficient when i2s is started for the 1st time */
     { 0x78, 0x80 },
 };
 
