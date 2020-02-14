@@ -171,13 +171,13 @@ static const struct snd_soc_dai_ops pcm1789_dai_ops = {
 	.trigger	= pcm1789_trigger,
 };
 
-static const DECLARE_TLV_DB_SCALE(pcm1789_dac_tlv, -12000, 50, 1);
+// static const DECLARE_TLV_DB_SCALE(pcm1789_dac_tlv, -12000, 50, 1);
 
-static const struct snd_kcontrol_new pcm1789_controls[] = {
-	SOC_DOUBLE_R_RANGE_TLV("DAC Playback Volume", PCM1789_DAC_VOL_LEFT,
-			       PCM1789_DAC_VOL_RIGHT, 0, 0xf, 0xff, 0,
-			       pcm1789_dac_tlv),
-};
+// static const struct snd_kcontrol_new pcm1789_controls[] = {
+// 	SOC_DOUBLE_R_RANGE_TLV("DAC Playback Volume", PCM1789_DAC_VOL_LEFT,
+// 			       PCM1789_DAC_VOL_RIGHT, 0, 0xf, 0xff, 0,
+// 			       pcm1789_dac_tlv),
+// };
 
 static const struct snd_soc_dapm_widget pcm1789_dapm_widgets[] = {
 	SND_SOC_DAPM_OUTPUT("IOUTL+"),
@@ -219,8 +219,8 @@ const struct regmap_config pcm1789_regmap_config = {
 EXPORT_SYMBOL_GPL(pcm1789_regmap_config);
 
 static const struct snd_soc_component_driver soc_component_dev_pcm1789 = {
-	.controls		= pcm1789_controls,
-	.num_controls		= ARRAY_SIZE(pcm1789_controls),
+	// .controls		= pcm1789_controls,
+	// .num_controls		= ARRAY_SIZE(pcm1789_controls),
 	.dapm_widgets		= pcm1789_dapm_widgets,
 	.num_dapm_widgets	= ARRAY_SIZE(pcm1789_dapm_widgets),
 	.dapm_routes		= pcm1789_dapm_routes,
